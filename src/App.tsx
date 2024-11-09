@@ -1,21 +1,43 @@
-import React from "react";
-import "./App.css";
-import { getTodoList } from "./api/services/todo";
+import React, { useState } from 'react';
+import useTodoState from './hooks/useTodoState';
+import TodoList from './components/TodoList';
 
-function App() {
-  const [data, setData] = React.useState<ITodo[]>();
-  React.useEffect(() => {
-    const fetchData = async () => {
-      await getTodoList().then((data) => {
-        setData(data);
-      });
-    };
+const App: React.FC = () => {
+  const { todos, addTodo, updateTodo, deleteTodo } = useTodoState();
+  const [inputValue, setInputValue] = useState('');
 
-    fetchData();
-  }, []);
-  console.log(data);
+  const handleAddTodo = () => {
+    if (inputValue.trim()) {
+      addTodo(inputValue);
+      setInputValue('');
+    }
+  };
 
-  return <></>;
-}
+  return (
+    <div style={{ padding: '20px', maxWidth: '600px', margin: 'auto' }}>
+      <h1>Todos</h1>
+
+      <div style={{ display: 'flex', marginBottom: '20px' }}>
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          placeholder="What needs to be done?"
+          style={{ flex: 1, padding: '8px' }}
+        />
+        <button onClick={handleAddTodo} style={{ marginLeft: '10px', padding: '8px' }}>
+          추가
+        </button>
+      </div>
+
+      {/* TodoList에 todos, updateTodo, deleteTodo 전달 */}
+      <TodoList
+        todos={todos}
+        updateTodo={updateTodo}
+        deleteTodo={deleteTodo}
+      />
+    </div>
+  );
+};
 
 export default App;
