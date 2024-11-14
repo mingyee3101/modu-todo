@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { ITodo } from '../api/services/todo';
+import { ITodo } from '../api/@types/todo';
 import { getTodoList, addTodo, updateTodo, deleteTodo } from '../api/services/Todo.Query.service';
 
 const useTodoQuery = () => {
