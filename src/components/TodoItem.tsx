@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { ITodo } from '../api/services/todo';
+import { supabase } from '../api/services/supabase';
 
 type TodoItemProps = {
-  todo: ITodo;
+  todo: typeof supabase;
   onDelete: (id: number) => void;
-  onChange: (id: number, updatedFields: Partial<ITodo>) => void; // onChange 추가
+  onChange: (id: number, updatedFields: Partial<typeof supabase>) => void; // onChange 추가
 };
 
 const TodoItem: React.FC<TodoItemProps> = ({ todo, onDelete, onChange }) => {

@@ -1,4 +1,4 @@
-interface ITodo {
+export interface ITodo {
   completed: boolean;
   createdAt: string;
   id: string;
