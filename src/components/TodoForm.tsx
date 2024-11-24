@@ -1,26 +1,30 @@
 import React, { useState } from 'react';
 
-interface ToDoFormProps {
+type TodoFormProps = {
     onAddTodo: (text: string) => void;
-}
+};
 
-const ToDoForm: React.FC<ToDoFormProps> = ({ onAddTodo }) => {
-    const [input, setInput] = useState('');
+const TodoForm: React.FC<TodoFormProps> = ({ onAddTodo }) => {
+    const [inputValue, setInputValue] = useState('');
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (input.trim()) {
-            onAddTodo(input);
-            setInput('');
-        }
+        if (!inputValue.trim()) return; // 빈 입력 방지
+        onAddTodo(inputValue);
+        setInputValue(''); // 입력값 초기화
     };
 
     return (
         <form onSubmit={handleSubmit}>
-            <input type="text" value={input} onChange={(e) => setInput(e.target.value)} placeholder="Add a new task" />
-            <button type="submit">Add</button>
+            <input
+                type="text"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                placeholder="할 일을 입력하세요"
+            />
+            <button type="submit">추가</button>
         </form>
     );
 };
 
-export default ToDoForm;
+export default TodoForm;

@@ -1,59 +1,41 @@
-import { supabase } from "./supabase";
+import { supabase } from './supabase';
 
-export async function getTodoList() {
-  const { data, error } = await supabase.from("todo").select("*");
-  if (error) {
-    console.log("error", error);
-    return [];
-  }
-  console.log("data fetching success", data);
-  return data;
+export interface Todo {
+    id: number;
+    title: string;
+    completed: boolean;
+    createdAt: string;
+    updatedAt?: string | null;
 }
 
-export async function createTodoList(title: string) {
-  const { data, error } = await supabase.from("todo").insert([
-    {
-      title,
-      createdAt: new Date().toISOString(),
-      updatedAt: null,
-      completed: false,
-    },
-  ]);
-  if (error) {
-    console.log("error", error);
-    return [];
-  }
-  console.log("data fetching success", data);
-  return data;
-}
+const handleResponse = async (promise: Promise<any>) => {
+    const { data, error } = await promise;
+    if (error) {
+        console.error('Error:', error.message);
+        return null;
+    }
+    console.log('Success:', data);
+    return data;
+};
 
-export async function updateTodoList(
-  id: string,
-  title: string,
-  completed: boolean
-) {
-  const { data, error } = await supabase
-    .from("todo")
-    .update({
-      title,
-      completed,
-      updatedAt: new Date().toISOString(),
-    })
-    .eq("id", id);
-  if (error) {
-    console.log("error", error);
-    return [];
-  }
-  console.log("data fetching success", data);
-  return data;
-}
+export const getTodoList = async (): Promise<Todo[] | null> => {
+    return handleResponse(supabase.from('todo').select('*'));
+};
 
-export async function deleteTodoList(id: string) {
-  const { data, error } = await supabase.from("todo").delete().eq("id", id);
-  if (error) {
-    console.log("error", error);
-    return [];
-  }
-  console.log("data fetching success", data);
-  return data;
-}
+export const createTodoList = async (title: string): Promise<Todo | null> => {
+    return handleResponse(
+        supabase.from('todo').insert([{ title, completed: false, createdAt: new Date().toISOString() }])
+    );
+};
+
+export const updateTodoList = async (
+    id: number,
+    updatedFields: Partial<Pick<Todo, 'title' | 'completed'>>
+): Promise<Todo | null> => {
+    return handleResponse(supabase.from('todo').update(updatedFields).eq('id', id));
+};
+
+export const deleteTodoList = async (id: number): Promise<number | null> => {
+    const result = await handleResponse(supabase.from('todo').delete().eq('id', id));
+    return result ? id : null;
+};

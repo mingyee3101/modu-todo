@@ -1,0 +1,16 @@
+/* TodoClientView.module.scss */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.5rem 0;
+}
+
+button {
+    margin-left: 0.5rem;
+}
