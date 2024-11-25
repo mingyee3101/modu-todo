@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
-type TodoFormProps = {
+interface TodoFormProps {
     onAddTodo: (text: string) => void;
-};
+    isLoading?: boolean;
+}
 
 const TodoForm: React.FC<TodoFormProps> = ({ onAddTodo }) => {
     const [inputValue, setInputValue] = useState('');

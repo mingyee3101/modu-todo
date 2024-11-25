@@ -3,15 +3,18 @@ import { ITodo } from '../api/@types/todo';
 
 type TodoItemProps = {
     todo: ITodo;
-    onDelete: (id: number) => void;
-    onChange: (id: number, updatedFields: Partial<ITodo>) => void; // onChange 추가
+    updateTodo: (id: string, updatedFields: Partial<Pick<ITodo, 'title' | 'completed'>>) => void;
+    deleteTodo: (id: string) => void;
+    isUpdating?: boolean;
+    isDeleting?: boolean;
 };
 
-const TodoItem: React.FC<TodoItemProps> = ({ todo, onDelete, onChange }) => {
-    const handleToggle = () => {
-        onChange(todo.id, { completed: !todo.completed }); // 상태 변경
-    };
+const TodoItem: React.FC<TodoItemProps> = ({ todo, updateTodo, deleteTodo, isUpdating, isDeleting }) => {
     const [isHovered, setIsHovered] = useState(false);
+
+    const handleToggle = () => {
+        updateTodo(todo.id, { completed: !todo.completed });
+    };
 
     return (
         <li
@@ -20,24 +23,19 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, onDelete, onChange }) => {
             style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
         >
             <div>
-                <input
-                    type="checkbox"
-                    checked={todo.completed}
-                    onChange={handleToggle} // 완료 상태 토글
-                />
-                {todo.title}
-                <button onClick={() => onDelete(todo.id)}>삭제</button>
+                <input type="checkbox" checked={todo.completed} onChange={handleToggle} disabled={isUpdating} />
                 <span
                     style={{
                         textDecoration: todo.completed ? 'line-through' : 'none',
                         color: todo.completed ? 'gray' : 'black',
+                        marginLeft: '8px',
                     }}
                 >
                     {todo.title}
                 </span>
             </div>
             {isHovered && (
-                <button onClick={() => onDelete(todo.id)} style={{ marginLeft: '10px' }}>
+                <button onClick={() => deleteTodo(todo.id)} disabled={isDeleting}>
                     삭제
                 </button>
             )}

@@ -1,54 +1,44 @@
-import { AxiosInstance } from 'axios';
-import { pathToUrl } from '../../utils/util';
-
-const TODO_ROUTES = {
-    GET_TODO: '/todo',
-    GET_TODO_DETAILS: '/todo/:todoId',
-    CREATE_TODO: '/todo',
-    UPDATE_TODO: '/todo/:todoId',
-    DELETE_TODO: '/todo/:todoId',
-} as const;
+import { supabase } from './supabase';
 
 export interface Todo {
-    id: number;
+    id: string;
     title: string;
     completed: boolean;
     createdAt: string;
     updatedAt?: string | null;
 }
 
-export class TodoService {
-    constructor(private _ajax: AxiosInstance) {}
+export const TodoService = {
+    getList: async () => {
+        const { data, error } = await supabase.from('todo').select('*').order('createdAt', { ascending: false });
 
-    async getTodoList(): Promise<Todo[]> {
-        const { data } = await this._ajax.get<Todo[]>(TODO_ROUTES.GET_TODO);
+        if (error) {
+            throw new Error(error.message);
+        }
         return data;
-    }
+    },
+    create: async (title: string) => {
+        const { data, error } = await supabase.from('todo').insert([{ title }]);
 
-    async getTodoDetail(todoId: number): Promise<Todo> {
-        const url = pathToUrl(TODO_ROUTES.GET_TODO_DETAILS, { todoId });
-        const { data } = await this._ajax.get<Todo>(url);
+        if (error) {
+            throw new Error(error.message);
+        }
         return data;
-    }
+    },
+    update: async (id: string, updatedFields: { title?: string; completed?: boolean }) => {
+        const { data, error } = await supabase.from('todo').update(updatedFields).eq('id', id);
 
-    async createTodoList(title: string): Promise<Todo> {
-        const { data } = await this._ajax.post<Todo>(TODO_ROUTES.CREATE_TODO, {
-            title,
-            completed: false,
-            createdAt: new Date().toISOString(),
-        });
+        if (error) {
+            throw new Error(error.message);
+        }
         return data;
-    }
+    },
+    delete: async (id: string) => {
+        const { data, error } = await supabase.from('todo').delete().eq('id', id);
 
-    async updateTodoList(todoId: number, updatedFields: Partial<Pick<Todo, 'title' | 'completed'>>): Promise<Todo> {
-        const url = pathToUrl(TODO_ROUTES.UPDATE_TODO, { todoId });
-        const { data } = await this._ajax.patch<Todo>(url, updatedFields);
+        if (error) {
+            throw new Error(error.message);
+        }
         return data;
-    }
-
-    async deleteTodoList(todoId: number): Promise<number> {
-        const url = pathToUrl(TODO_ROUTES.DELETE_TODO, { todoId });
-        await this._ajax.delete(url);
-        return todoId;
-    }
-}
+    },
+};
