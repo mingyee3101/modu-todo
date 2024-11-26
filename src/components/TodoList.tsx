@@ -19,9 +19,9 @@ const TodoList: React.FC<TodoListProps> = ({ todos, updateTodo, deleteTodo, isUp
     }
 
     return (
-        <ul>
+        <ul className="todo-list">
             {todos.map((todo) => (
-                <li key={todo.id}>
+                <li key={todo.id} className={todo.completed ? 'completed' : ''}>
                     <span style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>{todo.title}</span>
                     <button onClick={() => updateTodo(todo.id, { completed: !todo.completed })} disabled={isUpdating}>
                         {todo.completed ? '취소' : '완료'}

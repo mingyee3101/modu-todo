@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import TodoClientView from './views/TodoClientView';
-import TodoQueryView from './views/TodoQueryView'; // 쿼리뷰 컴포넌트 추가
+import TodoQueryView from './views/TodoQueryView';
+import styles from './App.module.css'; // CSS 모듈로 변경
 
 const App: React.FC = () => {
     const [isClientView, setIsClientView] = useState(true); // 뷰 전환 상태
@@ -10,19 +11,12 @@ const App: React.FC = () => {
     };
 
     return (
-        <div style={{ padding: '20px', maxWidth: '600px', margin: 'auto' }}>
-            <h1>Todos</h1>
-            <button
-                onClick={toggleView}
-                style={{
-                    marginBottom: '20px',
-                    padding: '10px 20px',
-                    cursor: 'pointer',
-                }}
-            >
+        <div className={styles.appContainer}>
+            <h1 className={styles.title}>Todos</h1>
+            <button className={styles.toggleButton} onClick={toggleView}>
                 {isClientView ? 'Switch to Query Page' : 'Switch to Client Page'}
             </button>
-            {isClientView ? <TodoClientView /> : <TodoQueryView />}
+            <div className={styles.viewContainer}>{isClientView ? <TodoClientView /> : <TodoQueryView />}</div>
         </div>
     );
 };

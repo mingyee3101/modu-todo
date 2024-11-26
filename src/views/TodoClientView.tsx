@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { TodoList, TodoForm } from '../components/TodoComponents';
 import { Todo } from '../api/services/Todo.service';
+import styles from './TodoClientView.module.scss';
 
 const TodoClientView: React.FC = () => {
     const local = localStorage.getItem('todos');
@@ -38,7 +39,7 @@ const TodoClientView: React.FC = () => {
     };
 
     return (
-        <div>
+        <div className={styles.todoapp}>
             <TodoForm onAddTodo={handleAddTodo} isLoading={false} />
             <TodoList
                 todos={todos}

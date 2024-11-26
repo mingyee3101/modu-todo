@@ -1,16 +1,95 @@
-/* TodoClientView.module.scss */
-ul {
-    list-style: none;
-    padding: 0;
+/* 전체 TodoClientView 스타일 */
+.todoapp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    padding: 20px;
+    background-color: #f9f9f9;
 }
 
-li {
+/* 헤더 스타일 */
+.todoapp header {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.todoapp header h1 {
+    font-size: 2.5em;
+    color: #333;
+    margin: 0;
+    line-height: 1.2;
+}
+
+/* TodoForm 스타일 */
+.todoapp .todo-form {
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.todoapp .todo-form input[type='text'] {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-right: 10px;
+    outline: none;
+}
+
+.todoapp .todo-form button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background: #5c6bc0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.todoapp .todo-form button:hover {
+    background: #3949ab;
+}
+
+/* TodoList 스타일 */
+.todoapp .todo-list {
+    width: 100%;
+    max-width: 600px;
+    list-style: none;
+    padding: 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.todoapp .todo-list li {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0.5rem 0;
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
 }
 
-button {
-    margin-left: 0.5rem;
+.todoapp .todo-list li:last-child {
+    border-bottom: none;
+}
+
+.todoapp .todo-list li.completed {
+    text-decoration: line-through;
+    color: #888;
+}
+
+.todoapp .todo-list li button {
+    background: none;
+    border: none;
+    color: #d32f2f;
+    cursor: pointer;
+}
+
+.todoapp .todo-list li button:hover {
+    color: #b71c1c;
 }
